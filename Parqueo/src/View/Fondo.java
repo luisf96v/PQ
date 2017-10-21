@@ -5,7 +5,6 @@
  */
 package View;
 
-import Entities.Fichero;
 import View.Panels.Index;
 import View.Panels.Ingresos;
 import View.Panels.Registrar;
@@ -20,21 +19,14 @@ import javax.swing.JPanel;
  *
  * @author luis
  */
-public class Fondo extends javax.swing.JFrame implements ActionListener {
+public final class Fondo extends javax.swing.JFrame implements ActionListener {
 
     /**
      * Creates new form Registrar
      */
     public Fondo() {
-        initComponents();
-        JPanel index = new Index();
-        ((Index) index).setActions(this);
-        index.setBounds(0, 0, 700, 510);
-        this.jPanel1.add(index);
-        this.jButton2.setVisible(false);
-        this.setResizable(false);
-
-        Fichero.analizaFichero();
+        this.initComponents();
+        this.startWindowComponents();
     }
 
     /**
@@ -84,6 +76,17 @@ public class Fondo extends javax.swing.JFrame implements ActionListener {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.mainPanel();
     }//GEN-LAST:event_jButton2ActionPerformed
+    
+    private void startWindowComponents(){
+        JPanel index = new Index();
+        ((Index) index).setActions(this);
+        index.setBounds(0, 0, 700, 510);
+        this.jPanel1.add(index);
+        this.jButton2.setVisible(false);
+        this.setResizable(false);
+        this.setVisible(true);        
+        this.setLocationRelativeTo(null);    
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {

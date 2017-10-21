@@ -5,9 +5,8 @@
  */
 package parqueo;
 
-import Entities.Data;
 import Entities.PDF;
-import View.Fondo;
+import View.Login;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,14 +21,12 @@ public class Parqueo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
+        Login l = new Login();
             /*Fondo i = Data.getFondo();
             i.setVisible(true);
             i.setLocationRelativeTo(null);*/
-            new PDF(null,"").generarPDF();
-        } catch (IOException ex) {
-            Logger.getLogger(Parqueo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+           // new PDF(null,"").generarPDF();
+        
         
     }
 

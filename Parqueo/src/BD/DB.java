@@ -25,55 +25,69 @@ import javax.swing.JOptionPane;
  */
 public class DB {
 
-    public DB() throws SQLException {
+    public DB() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(link, user, pass);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error con Base de Datos.", "Contacte con el administrador.", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Base de datos apagada.", "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
-            throw ex;
         }
     }
 
     //===============================================================
     /* Registro */
     //===============================================================
-    public void createRegistro(Vehiculo v) {
+    public Vehiculo createRgs(Vehiculo v) {
         if (con != null) {
+            Vehiculo aux  = v;
+        
             try {
                 Statement stmt = con.createStatement();
-                CallableStatement cs = con.prepareCall("{call new_registro(?,?,?,?,?)}");
+                CallableStatement cs = con.prepareCall("{CALL NEW_RGS(?,?)}");
                 cs.setString(1, v.getMatricula());
                 switch (v.getTipo()) {
                     case "Automóvil Act": {
-                        cs.setString(2, "N");
+                        cs.setInt(2, 1);
                         break;
                     }
                     case "Automóvil": {
-                        cs.setString(2, "A");
+                        cs.setInt(2, 2);
                         break;
                     }
                     case "Motocicleta": {
-                        cs.setString(2, "M");
+                        cs.setInt(2, 3);
                         break;
                     }
                     default: {
-                        cs.setString(2, "O");
+                        cs.setInt(2, 4);
                         break;
                     }
-                }
-                cs.setString(3, v.getEntrada().toString("yyyy-MM-dd HH:mm:ss"));
-                cs.setString(4, v.getEntrada().toString("yyyy-MM-dd HH:mm:ss"));
-                cs.setDouble(5, v.getTotal());
+                } 
                 cs.execute();
+                
+                ResultSet rs = cs.getResultSet();
+                rs.next();
+                rs.getDate(1);
             } catch (SQLException ex) {
                 Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
             }
+            return aux;
         }
+        return null;
     }
 
+    //===============================================================
+    /* USER */
+    //===============================================================
+    public String logIn(String user, String pass) throws SQLException{
+        CallableStatement cs = con.prepareCall("{CALL FIND_USER('"+user+"','"+pass+"')}");
+        ResultSet rs = cs.executeQuery();
+        
+        return rs.next()? rs.getString(1) : null;
+    }
+    
     public List<Vehiculo> registrosFechas(Date d1, Date d2) {
         List<Vehiculo> list = new ArrayList<>();
 
@@ -96,7 +110,7 @@ public class DB {
     }
 
     private Connection con;
-    private final String link = "jdbc:mysql://localhost:3306/parqueo";
-    private final String user = "root";
-    private final String pass = "root";
+    private final String link = "jdbc:mysql://localhost:3306/PRQ?noAccessToProcedureBodies=true";
+    private final String user = "emp";
+    private final String pass = "emp2017";
 }

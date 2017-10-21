@@ -1,0 +1,10 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix} PRQ PROYECT 
+${licensePrefix}  Made by: Luis Fernando Vásquez Quirós 
+${licensePrefix}     - Github: luisf96v
+${licensePrefix}     - Email  : luis96v@gmail.com 
+<#if licenseLast??>
+${licenseLast}
+</#if>

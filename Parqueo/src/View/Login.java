@@ -1,15 +1,15 @@
 package View;
 
-import Entities.Data;
-import java.sql.Connection;
+import Controller.UserControl;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Login extends javax.swing.JFrame {
+public final class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        this.setVisible(true);
         this.msg.setVisible(false);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -117,19 +117,14 @@ public class Login extends javax.swing.JFrame {
     private void enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarActionPerformed
         
         try {
-            Connection con = Data.getConnection();
-            
-            
-            /*Entities.Login login = new Entities.Login();
-            if(login.getPass().equals(this.usuario.getText())){
-            data.initLog(login);
-            this.dispose();
+            String usr = this.usuario.getText();
+            String pas = String.valueOf(this.contrasenia.getPassword());
+            if(usr != null && pas != null && UserControl.getInstance().doLogIn(usr, pas)){
+                this.dispose();
+                Fondo f = new Fondo();
             }else{
-            this.msg.setVisible(true);
-            this.contrasenia.setText("");
-            }*/
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                msg.setVisible(true);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
